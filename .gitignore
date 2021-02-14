@@ -1,4 +1,4 @@
 /node_modules/
-
+**/.idea/**
 # only generated for size check
-my-element.bundled.js
+date-picker.bundled.js
