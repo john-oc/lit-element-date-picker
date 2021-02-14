@@ -212,9 +212,8 @@ export class DatePicker extends LitElement {
                                 </div>
                             </div>
                         ` :
-                        html`
-                            <slot></slot>`}
-                <input type="text" size="14" @focus=${this.onFocus} value=${this.convertSelected(this.selected)}/>
+                        html``}
+                <input type="text" size="14" @focus=${this.onFocus} value=${this.convertSelected(this.selected)}>
             </div>
         `;
     }
