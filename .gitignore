@@ -1,4 +1,3 @@
-/node_modules/
 **/.idea/**
 # only generated for size check
 date-picker.bundled.js
