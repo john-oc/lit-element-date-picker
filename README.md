@@ -1,6 +1,6 @@
-# LitElement JavaScript starter 
+# LitElement JavaScript DatePicker 
 
-This project includes a sample component using LitElement with JavaScript.
+This DatePicker using LitElement with JavaScript.
 
 ## Setup
 
