@@ -7,14 +7,23 @@ import {unsafeHTML} from "lit-html/directives/unsafe-html";
 export class DatePicker extends LitElement {
     static get styles() {
         return css`
-      
+        input {
+            outline: none;
+            border: 1px solid #999999;
+            color: #999999;
+            background-color: inherit;
+            font-size: 1em;
+            font-weight: 200;
+            cursor: pointer;
+        }
+
        .relative {
             position: relative;
             z-index: 10000;
         }
     
         .container {
-            margin-top: 0.4em;
+            padding-top: 4px;
             width: 262px;
             background-color: #ededed;
         }
@@ -25,27 +34,21 @@ export class DatePicker extends LitElement {
             left: 40px;
             border: 1px solid lightsteelblue;
             display: inline-block;
-            opacity: 100%;
-            font-size: 1em;
             font-weight: 200;
             background-color: #efefef;
+            color: #6d6d6d;
+            padding-top: 4px;
         }
     
         .center {
             display: flex;
             justify-content: center;
             align-items: center;
-            border: none;
-            outline: none;
-            font-size: 1em;
-            font-weight: 200;
-            padding-top: 4px;
         }
     
         button {
             outline: none;
             border: none;
-            color: #999999;
             background-color: inherit;
             cursor: pointer;
             margin: 2px 8px;
@@ -59,20 +62,10 @@ export class DatePicker extends LitElement {
             background-color: #ffffff;
         }
     
-        input {
-            outline: none;
-            border: 1px solid #999999;
-            color: #999999;
-            background-color: inherit;
-            font-size: 1em;
-            font-weight: 200;
-            cursor: pointer;
-        }
-        
         .row {
             text-align: center;
             display: flex;
-            font-size: 1em;
+            font-size: 16px;
             font-weight: 300;
             padding: 0.4em 0.3em;
             flex-wrap: wrap;
@@ -80,18 +73,15 @@ export class DatePicker extends LitElement {
         }
     
         .cell {
-            display: table-cell;
+            display: flex;
             width: 32px;
             height: 32px;
             text-align: center;
-            font-size: 1em;
             margin: 2px;
             background-color: #ffffff;
             border-radius: 100%;
-            vertical-align: middle;
-        }
-        .cell-content {
-            margin-top: 6px;
+            justify-content: center;
+            align-items: center;
         }
     
         .weekday {
@@ -108,26 +98,22 @@ export class DatePicker extends LitElement {
     
         .selected {
             background-color: lightsteelblue;
-            color: black;
             font-weight: 200;
             text-shadow: 0 0 0.5em white;
         }
     
         .highlight {
-            transition: transform 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition: transform 1s rotate(90);
         }
     
         .disabled {
             background: #efefef;
             cursor: not-allowed;
-            color: #bfbfbf;
         }
     
         .highlight:hover {
-            color: black;
-            background-color: white;
-            opacity: 70%;
-            font-weight: 400;
+            background-color: cornflowerblue;
+            color: white;
             cursor: pointer;
         }
     
@@ -186,12 +172,12 @@ export class DatePicker extends LitElement {
                         html`
                             <div class="box">
                                 <div class="month-name">
-                                    <div class="center">
+                                    <div>
                                         <button type=text @click=${this.prev}>${unsafeHTML(iconLeft)}</button>
                                     </div>
                                     <div class="center" style="width: 100%;">${monthNames[this.month]} ${this.year}
                                     </div>
-                                    <div class="center">
+                                    <div>
                                         <button type=text @click=${this.next}>${unsafeHTML(iconRight)}</button>
                                     </div>
                                 </div>
@@ -214,9 +200,7 @@ export class DatePicker extends LitElement {
                                                                  ${new Date(this.selected.getFullYear(), this.selected.getMonth(), this.selected.getDate()).getTime() === new Date(this.year, this.month, value).getTime()} ? 'selected' : ''"
                                                      @click=${allowed && value ? this.onChange.bind(this, value) : () => {
                                                      }}>
-                                                    <div class="cell-content">
-                                                        ${value || ''}
-                                                    </div>
+                                                    ${value || ''}
                                                 </div>
                                             `)}
                                         </div>
