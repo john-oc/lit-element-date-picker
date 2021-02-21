@@ -264,8 +264,6 @@ export class DatePicker extends LitElement {
         if (!date) return true;
         return this.isAllowed(new Date(year, month, date));
     }
-
-
 }
 
 window.customElements.define('date-picker', DatePicker);
