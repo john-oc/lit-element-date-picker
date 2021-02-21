@@ -22,22 +22,15 @@ export class DatePicker extends LitElement {
             z-index: 10000;
         }
     
-        .container {
-            padding-top: 4px;
-            width: 262px;
-            background-color: #ededed;
-        }
-    
         .box {
             position: absolute;
             top: 0;
             left: 40px;
-            border: 1px solid lightsteelblue;
+            border: 1px solid #004666;
             display: inline-block;
             font-weight: 200;
-            background-color: #efefef;
-            color: #6d6d6d;
-            padding-top: 4px;
+            background-color: #004666;
+            color: #ffffff;
         }
     
         .center {
@@ -49,7 +42,7 @@ export class DatePicker extends LitElement {
         button {
             outline: none;
             border: none;
-            background-color: inherit;
+            background-color: white;
             cursor: pointer;
             margin: 2px 8px;
             border-radius: 100%;
@@ -59,17 +52,22 @@ export class DatePicker extends LitElement {
         }
     
         button:hover {
-            background-color: #ffffff;
+            background-color: #4A849F;
+            color: white;
+        }
+        
+        .container {
+            background-color: #dedede;
         }
     
         .row {
             text-align: center;
-            display: flex;
+            display: grid;
+            grid-template-columns: auto auto auto auto auto auto auto;
             font-size: 16px;
             font-weight: 300;
-            padding: 0.4em 0.3em;
+            padding: 0.3em;
             flex-wrap: wrap;
-            background-color: #dedede;
         }
     
         .cell {
@@ -77,8 +75,8 @@ export class DatePicker extends LitElement {
             width: 32px;
             height: 32px;
             text-align: center;
-            margin: 2px;
-            background-color: #ffffff;
+            margin: 3px;
+            background-color: #ededed;
             border-radius: 100%;
             justify-content: center;
             align-items: center;
@@ -94,31 +92,34 @@ export class DatePicker extends LitElement {
             display: flex;
             justify-content: space-around;
             align-items: center;
+            padding: 4px 0;
         }
     
         .selected {
-            background-color: lightsteelblue;
+            background-color: #4A849F;
             font-weight: 200;
+            color: white;
             text-shadow: 0 0 0.5em white;
         }
     
         .highlight {
-            transition: transform 1s rotate(90);
+            background-color: white;
+            color: grey;
         }
     
         .disabled {
-            background: #efefef;
+            background-color: #9d9d9d;
             cursor: not-allowed;
         }
     
         .highlight:hover {
-            background-color: cornflowerblue;
+            background-color: #004666;
             color: white;
             cursor: pointer;
         }
     
         .selected.highlight:hover {
-            background: cornflowerblue;
+            background: #004666;
         }
 
         `;
@@ -182,28 +183,26 @@ export class DatePicker extends LitElement {
                                     </div>
                                 </div>
                                 <!-- Calendar -->
-                                <div>
-                                    <div class="container">
-                                        <div class="row">
-                                            ${weekdays.map((day) => html`
-                                                <div class="cell weekday">
-                                                    <div class="cell-content">
-                                                        ${day}
-                                                    </div>
-                                                </div>`)}
-                                        </div>
+                                <div class="container">
+                                    <div class="row">
+                                        ${weekdays.map((day) => html`
+                                            <div class="cell weekday">
+                                                <div class="cell-content">
+                                                    ${day}
+                                                </div>
+                                            </div>`)}
+                                    </div>
 
-                                        <div class="row">
-                                            ${this.cells.map(({allowed, value}) => html`
-                                                <div class="cell ${allowed && value ? 'highlight' : ''}
+                                    <div class="row">
+                                        ${this.cells.map(({allowed, value}) => html`
+                                            <div class="cell ${allowed && value ? 'highlight' : ''}
                                                                  ${!allowed ? 'disabled' : ''}
                                                                  ${new Date(this.selected.getFullYear(), this.selected.getMonth(), this.selected.getDate()).getTime() === new Date(this.year, this.month, value).getTime()} ? 'selected' : ''"
-                                                     @click=${allowed && value ? this.onChange.bind(this, value) : () => {
-                                                     }}>
-                                                    ${value || ''}
-                                                </div>
-                                            `)}
-                                        </div>
+                                                 @click=${allowed && value ? this.onChange.bind(this, value) : () => {
+                                                 }}>
+                                                ${value || ''}
+                                            </div>
+                                        `)}
                                     </div>
                                 </div>
                             </div>
