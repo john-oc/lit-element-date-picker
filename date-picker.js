@@ -1,5 +1,5 @@
-import {LitElement, html, css} from './node_modules/lit-element';
-import {getMonthName, getDateRows} from "./date-time.js";
+import {LitElement, html, css} from 'lit-element';
+import {getDateRows, setLocales, monthNames, weekdays, convertSelected} from "./date-time.js";
 
 
 export class DatePicker extends LitElement {
@@ -144,9 +144,11 @@ export class DatePicker extends LitElement {
             year: {type: Number},
             showDatePicker: {type: Boolean},
             weekdays: {type: Array},
-            cells: {type: Function}
+            cells: {type: Function},
+            locales: {type: String}
         };
     }
+
 
     constructor() {
         super();
@@ -157,11 +159,12 @@ export class DatePicker extends LitElement {
         this.date = this.selected.getUTCDate();
         this.month = this.selected.getUTCMonth();
         this.year = this.selected.getUTCFullYear();
-        this.weekdays = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
         this.cells = getDateRows(this.month, this.year).map(c => ({
             value: c,
             allowed: this.allow(this.year, this.month, c)
         }));
+        this.locales = "de-DE";
+        setLocales(this.locales);
 
         let site = document.getElementsByTagName('html');
         site[0].addEventListener('click', () => {
@@ -183,7 +186,7 @@ export class DatePicker extends LitElement {
                                     <div class="center">
                                         <button type=text @click=${this.prev}>Prev</button>
                                     </div>
-                                    <div class="center" style="width: 100%;">${getMonthName(this.month)} ${this.year}
+                                    <div class="center" style="width: 100%;">${monthNames[this.month]} ${this.year}
                                     </div>
                                     <div class="center">
                                         <button type=text @click=${this.next}>Next</button>
@@ -193,7 +196,7 @@ export class DatePicker extends LitElement {
                                 <div>
                                     <div class="container">
                                         <div class="row">
-                                            ${this.weekdays.map((day) => html`
+                                            ${weekdays.map((day) => html`
                                                 <div class="cell weekday">${day}</div>`)}
                                         </div>
 
@@ -213,7 +216,7 @@ export class DatePicker extends LitElement {
                             </div>
                         ` :
                         html``}
-                <input type="text" size="14" @focus=${this.onFocus} value=${this.convertSelected(this.selected)}>
+                <input type="text" size="14" @focus=${this.onFocus} value=${convertSelected(this.selected)}>
             </div>
         `;
     }
@@ -251,11 +254,6 @@ export class DatePicker extends LitElement {
         this.showDatePicker = true;
     }
 
-    convertSelected() {
-        const options = {weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit'};
-
-        return this.selected.toLocaleDateString("de-DE", options);
-    }
 
     onChange(date) {
         this.selected = new Date(Date.UTC(this.year, this.month, date));
