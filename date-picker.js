@@ -1,5 +1,7 @@
 import {LitElement, html, css} from 'lit-element';
 import {getDateRows, setLocales, monthNames, weekdays, convertSelected} from "./date-time.js";
+import {iconLeft, iconRight} from "./IconService";
+import {unsafeHTML} from "lit-html/directives/unsafe-html";
 
 
 export class DatePicker extends LitElement {
@@ -8,7 +10,13 @@ export class DatePicker extends LitElement {
       
        .relative {
             position: relative;
-            z-index: 1000;
+            z-index: 10000;
+        }
+    
+        .container {
+            margin-top: 0.4em;
+            width: 262px;
+            background-color: #ededed;
         }
     
         .box {
@@ -18,16 +26,9 @@ export class DatePicker extends LitElement {
             border: 1px solid lightsteelblue;
             display: inline-block;
             opacity: 100%;
-            font-size: 0.95em;
+            font-size: 1em;
             font-weight: 200;
             background-color: #efefef;
-        }
-    
-        .month-name {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin: 0.2em 0;
         }
     
         .center {
@@ -36,10 +37,9 @@ export class DatePicker extends LitElement {
             align-items: center;
             border: none;
             outline: none;
-            font-size: 0.95em;
+            font-size: 1em;
             font-weight: 200;
-            padding-top: 0.4em;
-            height: 1em;
+            padding-top: 4px;
         }
     
         button {
@@ -47,11 +47,12 @@ export class DatePicker extends LitElement {
             border: none;
             color: #999999;
             background-color: inherit;
-            font-size: 0.85em;
-            font-weight: 200;
-            height: 1.3em;
             cursor: pointer;
-            margin: 0.4em;
+            margin: 2px 8px;
+            border-radius: 100%;
+            width: 32px;
+            height: 32px;
+            text-align: center;
         }
     
         button:hover {
@@ -63,19 +64,11 @@ export class DatePicker extends LitElement {
             border: 1px solid #999999;
             color: #999999;
             background-color: inherit;
-            font-size: 0.85em;
+            font-size: 1em;
             font-weight: 200;
-            height: 1.3em;
-            border-radius: 3px;
             cursor: pointer;
         }
         
-        .container {
-            margin-top: 0.4em;
-            width: 240px;
-            background-color: #ededed;
-        }
-    
         .row {
             text-align: center;
             display: flex;
@@ -87,20 +80,30 @@ export class DatePicker extends LitElement {
         }
     
         .cell {
-            display: inline-block;
-            width: 1.8em;
-            height: 1.2em;
+            display: table-cell;
+            width: 32px;
+            height: 32px;
             text-align: center;
-            font-size: 0.9em;
-            padding: 0.2em;
-            margin: 0.1em 0.1em 0.2em;
+            font-size: 1em;
+            margin: 2px;
             background-color: #ffffff;
+            border-radius: 100%;
+            vertical-align: middle;
+        }
+        .cell-content {
+            margin-top: 6px;
         }
     
         .weekday {
             color: #9a9a9a;
             font-weight: 300;
             background-color: whitesmoke;
+        }
+    
+        .month-name {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
         }
     
         .selected {
@@ -184,12 +187,12 @@ export class DatePicker extends LitElement {
                             <div class="box">
                                 <div class="month-name">
                                     <div class="center">
-                                        <button type=text @click=${this.prev}>Prev</button>
+                                        <button type=text @click=${this.prev}>${unsafeHTML(iconLeft)}</button>
                                     </div>
                                     <div class="center" style="width: 100%;">${monthNames[this.month]} ${this.year}
                                     </div>
                                     <div class="center">
-                                        <button type=text @click=${this.next}>Next</button>
+                                        <button type=text @click=${this.next}>${unsafeHTML(iconRight)}</button>
                                     </div>
                                 </div>
                                 <!-- Calendar -->
@@ -197,7 +200,11 @@ export class DatePicker extends LitElement {
                                     <div class="container">
                                         <div class="row">
                                             ${weekdays.map((day) => html`
-                                                <div class="cell weekday">${day}</div>`)}
+                                                <div class="cell weekday">
+                                                    <div class="cell-content">
+                                                        ${day}
+                                                    </div>
+                                                </div>`)}
                                         </div>
 
                                         <div class="row">
@@ -207,7 +214,9 @@ export class DatePicker extends LitElement {
                                                                  ${new Date(this.selected.getFullYear(), this.selected.getMonth(), this.selected.getDate()).getTime() === new Date(this.year, this.month, value).getTime()} ? 'selected' : ''"
                                                      @click=${allowed && value ? this.onChange.bind(this, value) : () => {
                                                      }}>
-                                                    ${value || ''}
+                                                    <div class="cell-content">
+                                                        ${value || ''}
+                                                    </div>
                                                 </div>
                                             `)}
                                         </div>
