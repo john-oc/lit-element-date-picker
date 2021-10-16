@@ -1,3 +1,2 @@
-**/.idea/**
-# only generated for size check
-date-picker.bundled.js
+.vscode
+node_modules
